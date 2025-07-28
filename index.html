@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    
+
+</head>
+<body>
+<div id="invoice">
+    <h2 class="title">Tax Invoice</h2>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <strong>Your Company Name</strong><br>
+                <textarea id="companyDetails" class="address-block">Your Address Here</textarea><br>
+                GSTIN: <input type="text" id="companyGST" value="GSTIN-HERE">
+            </td>
+            <td>
+                Invoice No: <input type="text" id="invoiceNo" value="001"><br>
+                Dated: <input type="date" id="invoiceDate"><br>
+                Delivery Note: <input type="text" id="deliveryNote"><br>
+                Mode/Terms of Payment: <input type="text" id="paymentTerms" value="Cash">
+            </td>
+        </tr>
+    </table>
+
+    <table class="address-table">
+        <tr>
+            <td>
+                Consignee (Ship to):<br>
+                <textarea id="consignee" class="address-block"></textarea><br>
+                GSTIN: <input type="text" id="consigneeGST">
+            </td>
+            <td>
+                Buyer (Bill to):<br>
+                <textarea id="buyer" class="address-block"></textarea><br>
+                GSTIN: <input type="text" id="buyerGST">
+            </td>
+        </tr>
+    </table>
+
+    <table id="items" class="item-table">
+        <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>Description of Goods</th>
+                <th>HSN/SAC</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Per</th>
+                <th>Amount</th>
+                <th class="action-col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><input type="text" class="desc"></td>
+                <td><input type="text" class="hsn"></td>
+                <td><input type="number" class="qty" value="1" oninput="updateTotals()"></td>
+                <td><input type="number" class="rate" value="0" oninput="updateTotals()"></td>
+                <td><input type="text" class="per" value="pcs"></td>
+                <td class="amount">0.00</td>
+                <td><button class="remove-btn" onclick="removeRow(this)">X</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn" onclick="addRow()">+ Add Item</button>
+
+    <table class="summary-table">
+        <tr>
+            <td>GST Rate (%)</td>
+            <td><input type="number" id="gstRate" value="18" oninput="updateTotals()"></td>
+            <td>Total</td>
+            <td id="total">₹0.00</td>
+        </tr>
+        <tr>
+            <td colspan="2">IGST</td>
+            <td>Tax Amount</td>
+            <td id="tax">₹0.00</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>Grand Total</td>
+            <td id="grandTotal">₹0.00</td>
+        </tr>
+    </table>
+
+    <p><strong>Amount in words:</strong> <span id="amountWords">Zero Only</span></p>
+    <p><strong>Declaration:</strong> We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+</div>
+
+<button class="btn" onclick="generatePDF()">Download PDF</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
