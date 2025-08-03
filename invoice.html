@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Invoice</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+        .invoice-box {
+            width: 100%;
+            max-width: 750px;
+            margin: auto;
+            border: 1px solid #000;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        td, th {
+            border: 1px solid #000;
+            padding: 5px;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+        .no-border td {
+            border: none !important;
+        }
+        .header td {
+            width: 33.3%;
+        }
+        .buyer-info td {
+            width: 50%;
+        }
+        .items-table th {
+            background: #f2f2f2;
+            text-align: center;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .amount-words {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <div class="title">Tax Invoice</div>
+        <table class="header">
+            <tr>
+                <td>
+                    <strong>Sky Blower Systems</strong><br>
+                    B-123, Huts Meera Bagh, Paschim Vihar,<br>
+                    West Delhi, Delhi-110063<br>
+                    GSTIN: 07DKEPK6098B1Z3<br>
+                    State Name: Delhi, Code: 07
+                </td>
+                <td>
+                    <b>Invoice No:</b> 65<br>
+                    <b>e-Way Bill No:</b> _______<br>
+                    <b>Dated:</b> 17-Jul-25<br>
+                    <b>Transport charges extra</b>
+                </td>
+                <td>
+                    <b>Reference No & Date:</b><br><br>
+                    <b>Other References:</b>
+                </td>
+            </tr>
+        </table>
+
+        <table class="buyer-info">
+            <tr>
+                <td>
+                    <b>Consignee (Ship to)</b><br>
+                    <strong>AIRYAN PNEUMATICS</strong><br>
+                    Gala No 19 Abdul Rashid Compound Kherani Road,<br>
+                    Sakinaka Mumbai 400072. Behind Sanman Hotel<br>
+                    GSTIN: 27BDDPS9188N1ZH<br>
+                    State Name: Maharashtra, Code: 27
+                </td>
+                <td>
+                    <b>Buyer (Bill to)</b><br>
+                    <strong>M/S AIRYAN PNEUMATICS</strong><br>
+                    17, Matruchya CHS, Near Anand Baba Ashram,<br>
+                    Mohill Village Sakinaka Andheri (E), Hotel<br>
+                    GSTIN: 27BDDPS9188N1ZH<br>
+                    State Name: Maharashtra, Code: 27
+                </td>
+            </tr>
+        </table>
+
+        <table class="items-table" style="margin-top:8px;">
+            <thead>
+                <tr>
+                    <th style="width:5%">Sl</th>
+                    <th style="width:45%">Description of Goods</th>
+                    <th style="width:10%">HSN/SAC</th>
+                    <th style="width:10%">Quantity</th>
+                    <th style="width:10%">Rate</th>
+                    <th style="width:5%">per</th>
+                    <th style="width:15%">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <b>AIR Blower</b><br>
+                        Model No 47 Capacity 220m3/hr<br>
+                        Pressure 0.2kg/cm2 RPM<br>
+                        1119# BLOWER
+                    </td>
+                    <td>84145920</td>
+                    <td>1 set</td>
+                    <td>43,000.00</td>
+                    <td>set</td>
+                    <td>43,000.00</td>
+                </tr>
+                <tr>
+                    <td colspan="6"><b>IGST OUTPUT @ 18%</b></td>
+                    <td>7,740.00</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-right"><b>Total</b></td>
+                    <td><b>50,740.00</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="amount-words">
+            Amount Chargeable (in words): <br>
+            <b>INR Fifty Thousand Seven Hundred Forty Only</b>
+        </div>
+
+        <table class="total-section" style="margin-top:8px;">
+            <thead>
+                <tr>
+                    <th>HSN/SAC</th>
+                    <th>Taxable Value</th>
+                    <th>Rate</th>
+                    <th>IGST Amount</th>
+                    <th>Total Tax Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>84145920</td>
+                    <td>43,000.00</td>
+                    <td>18%</td>
+                    <td>7,740.00</td>
+                    <td>7,740.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="amount-words">
+            Tax Amount (in words): <br>
+            <b>INR Seven Thousand Seven Hundred Forty Only</b>
+        </div>
+
+        <div style="margin-top:15px;">
+            <b>Declaration</b><br>
+            We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.<br><br>
+            <i>This is a Computer Generated Invoice</i>
+        </div>
+
+        <div class="signature">
+            for Sky Blower Systems<br><br><br>
+            <b>Authorised Signatory</b>
+        </div>
+    </div>
+</body>
+</html>

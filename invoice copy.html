@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Invoice</title>
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+        .invoice-box {
+            width: 190mm;
+            min-height: 277mm;
+            margin: auto;
+            border: 1px solid #000;
+            padding: 10mm;
+            box-sizing: border-box;
+        }
+        .title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse !important;
+            table-layout: fixed;
+        }
+        td, th {
+            border: 1px solid #000 !important;
+            padding: 5px;
+            vertical-align: top;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .header td { width: 33.3%; }
+        .buyer-info td { width: 50%; }
+        .items-table th { background: #f2f2f2; text-align: center; }
+        .text-right { text-align: right; }
+        .amount-words { margin-top: 10px; font-weight: bold; }
+        .signature { text-align: right; margin-top: 30px; }
+        .editable {
+            width: 100%;
+            min-height: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 12px;
+        }
+        .action-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .delete-btn { background-color: #dc3545; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="invoice-box" id="invoice">
+        <div class="title">Tax Invoice</div>
+
+        <!-- Header Section -->
+        <table class="header">
+            <tr>
+                <td>
+                    <strong><div contenteditable="true" class="editable">Sky Blower Systems</div></strong>
+                    <div contenteditable="true" class="editable">B-123, Huts Meera Bagh, Paschim Vihar, West Delhi, Delhi-110063</div>
+                    GSTIN: <div contenteditable="true" class="editable">07DKEPK6098B1Z3</div>
+                    State Name: <div contenteditable="true" class="editable">Delhi</div>, Code: <div contenteditable="true" class="editable">07</div>
+                </td>
+                <td>
+                    <b>Invoice No:</b> <div contenteditable="true" class="editable">65</div>
+                    <b>e-Way Bill No:</b> <div contenteditable="true" class="editable"></div>
+                    <b>Dated:</b> <input type="date">
+                    <b>Transport charges extra</b>
+                </td>
+                <td>
+                    <b>Reference No & Date:</b> <div contenteditable="true" class="editable"></div>
+                    <b>Other References:</b> <div contenteditable="true" class="editable"></div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Buyer Info Section -->
+        <table class="buyer-info">
+            <tr>
+                <td>
+                    <b>Consignee (Ship to)</b><br>
+                    <strong><div contenteditable="true" class="editable">AIRYAN PNEUMATICS</div></strong>
+                    <div contenteditable="true" class="editable">Gala No 19 Abdul Rashid Compound Kherani Road, Sakinaka Mumbai 400072. Behind Sanman Hotel</div>
+                    GSTIN: <div contenteditable="true" class="editable">27BDDPS9188N1ZH</div>
+                    State Name: <div contenteditable="true" class="editable">Maharashtra</div>, Code: <div contenteditable="true" class="editable">27</div>
+                </td>
+                <td>
+                    <b>Buyer (Bill to)</b><br>
+                    <strong><div contenteditable="true" class="editable">M/S AIRYAN PNEUMATICS</div></strong>
+                    <div contenteditable="true" class="editable">17, Matruchya CHS, Near Anand Baba Ashram, Mohill Village Sakinaka Andheri (E), Hotel</div>
+                    GSTIN: <div contenteditable="true" class="editable">27BDDPS9188N1ZH</div>
+                    State Name: <div contenteditable="true" class="editable">Maharashtra</div>, Code: <div contenteditable="true" class="editable">27</div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Items Table -->
+        <table class="items-table" style="margin-top:8px;" id="itemsTable">
+            <thead>
+                <tr>
+                    <th style="width:5%">Sl</th>
+                    <th style="width:40%">Description of Goods</th>
+                    <th style="width:10%">HSN/SAC</th>
+                    <th style="width:10%">Quantity</th>
+                    <th style="width:10%">Rate</th>
+                    <th style="width:5%">Per</th>
+                    <th style="width:15%">Amount</th>
+                    <th style="width:5%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><div contenteditable="true" class="editable">AIR Blower
+Model No 47 Capacity 220m3/hr
+Pressure 0.2kg/cm2 RPM
+1119# BLOWER</div></td>
+                    <td><div contenteditable="true" class="editable">84145920</div></td>
+                    <td><input type="number" value="1" oninput="calculateTotals()"></td>
+                    <td><input type="number" value="43000" oninput="calculateTotals()"></td>
+                    <td><div contenteditable="true" class="editable">set</div></td>
+                    <td><input class="amount" readonly></td>
+                    <td><button class="action-btn delete-btn" onclick="deleteRow(this)">−</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="action-btn" onclick="addRow()">+ Add Item</button>
+
+        <!-- GST & Total Section -->
+        <table class="items-table">
+            <tr>
+                <td colspan="6"><b>CGST OUTPUT @ 9%</b></td>
+                <td><input id="cgst" readonly></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><b>SGST OUTPUT @ 9%</b></td>
+                <td><input id="sgst" readonly></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-right"><b>Total</b></td>
+                <td><b><input id="totalAmount" readonly></b></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <div class="amount-words">
+            Amount Chargeable (in words): <br>
+            <b><input id="amountWords" readonly></b>
+        </div>
+
+        <div style="margin-top:15px;">
+            <b>Declaration</b><br>
+            We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.<br><br>
+            <i>This is a Computer Generated Invoice</i>
+        </div>
+
+        <div class="signature">
+            for <div contenteditable="true" class="editable">Sky Blower Systems</div><br><br><br>
+            <b>Authorised Signatory</b>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 20px;">
+        <button onclick="generatePDF()">Download PDF</button>
+    </div>
+
+    <script>
+        function addRow() {
+            let table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
+            let rowCount = table.rows.length + 1;
+            let row = table.insertRow();
+            row.innerHTML = `
+                <td>${rowCount}</td>
+                <td><div contenteditable="true" class="editable"></div></td>
+                <td><div contenteditable="true" class="editable"></div></td>
+                <td><input type="number" value="1" oninput="calculateTotals()"></td>
+                <td><input type="number" value="0" oninput="calculateTotals()"></td>
+                <td><div contenteditable="true" class="editable"></div></td>
+                <td><input class="amount" readonly></td>
+                <td><button class="action-btn delete-btn" onclick="deleteRow(this)">−</button></td>
+            `;
+        }
+
+        function deleteRow(btn) {
+            let row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            updateSerialNumbers();
+            calculateTotals();
+        }
+
+        function updateSerialNumbers() {
+            let table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
+            for (let i = 0; i < table.rows.length; i++) {
+                table.rows[i].cells[0].innerText = i + 1;
+            }
+        }
+
+        function calculateTotals() {
+            let table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
+            let subtotal = 0;
+            for (let i = 0; i < table.rows.length; i++) {
+                let qty = parseFloat(table.rows[i].cells[3].querySelector("input").value) || 0;
+                let rate = parseFloat(table.rows[i].cells[4].querySelector("input").value) || 0;
+                let amount = qty * rate;
+                table.rows[i].cells[6].querySelector("input").value = amount.toFixed(2);
+                subtotal += amount;
+            }
+            let cgst = subtotal * 0.09;
+            let sgst = subtotal * 0.09;
+            let total = subtotal + cgst + sgst;
+
+            document.getElementById("cgst").value = cgst.toFixed(2);
+            document.getElementById("sgst").value = sgst.toFixed(2);
+            document.getElementById("totalAmount").value = total.toFixed(2);
+            document.getElementById("amountWords").value = numberToWords(total);
+        }
+
+        function numberToWords(num) {
+            const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+                'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+            if ((num = num.toString()).length > 9) return 'Overflow';
+            let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+            if (!n) return; let str = '';
+            str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + ' Crore ' : '';
+            str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + ' Lakh ' : '';
+            str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + ' Thousand ' : '';
+            str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + ' Hundred ' : '';
+            str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' Only' : '';
+            return str.trim();
+        }
+
+        function generatePDF() {
+            calculateTotals();
+
+            let invoiceClone = document.getElementById("invoice").cloneNode(true);
+
+            // Remove action buttons and column
+            invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
+            invoiceClone.querySelectorAll("th:last-child, td:last-child").forEach(cell => {
+                if (cell.innerText.includes("Action") || cell.querySelector("button")) {
+                    cell.remove();
+                }
+            });
+
+            html2pdf().set({
+                margin: [0, 0, 5, 0],
+                filename: 'invoice.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(invoiceClone).save();
+        }
+
+        // Initial calculation
+        calculateTotals();
+    </script>
+</body>
+</html>

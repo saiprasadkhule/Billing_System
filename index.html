@@ -3,103 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Generator</title>
+    <title>Tax Invoice</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-<div id="invoice">
-    <h2 class="title">Tax Invoice</h2>
+    <div class="invoice-box" id="invoice">
+        <div class="title">Tax Invoice</div>
 
-    <table class="header-table">
-        <tr>
-            <td>
-                <strong>Your Company Name</strong><br>
-                <textarea id="companyDetails" class="address-block">Your Address Here</textarea><br>
-                GSTIN: <input type="text" id="companyGST" value="GSTIN-HERE">
-            </td>
-            <td>
-                Invoice No: <input type="text" id="invoiceNo" value="001"><br>
-                Dated: <input type="date" id="invoiceDate"><br>
-                Delivery Note: <input type="text" id="deliveryNote"><br>
-                Mode/Terms of Payment: <input type="text" id="paymentTerms" value="Cash">
-            </td>
-        </tr>
-    </table>
-
-    <table class="address-table">
-        <tr>
-            <td>
-                Consignee (Ship to):<br>
-                <textarea id="consignee" class="address-block"></textarea><br>
-                GSTIN: <input type="text" id="consigneeGST">
-            </td>
-            <td>
-                Buyer (Bill to):<br>
-                <textarea id="buyer" class="address-block"></textarea><br>
-                GSTIN: <input type="text" id="buyerGST">
-            </td>
-        </tr>
-    </table>
-
-    <table id="items" class="item-table">
-        <thead>
+        <!-- Header Section -->
+        <table class="header">
             <tr>
-                <th>Sl No</th>
-                <th>Description of Goods</th>
-                <th>HSN/SAC</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>Per</th>
-                <th>Amount</th>
-                <th class="action-col">Action</th>
+                <td>
+                    <strong><div contenteditable="true" class="editable">Sky Blower Systems</div></strong>
+                    <div contenteditable="true" class="editable">B-123, Huts Meera Bagh, Paschim Vihar, West Delhi, Delhi-110063</div>
+                    GSTIN: <div contenteditable="true" class="editable">07DKEPK6098B1Z3</div>
+                    State Name: <div contenteditable="true" class="editable">Delhi</div>, Code: <div contenteditable="true" class="editable">07</div>
+                </td>
+                <td>
+                    <b>Invoice No:</b> <div contenteditable="true" class="editable">65</div>
+                    <b>e-Way Bill No:</b> <div contenteditable="true" class="editable"></div>
+                    <b>Dated:</b> <input type="date">
+                    <b>Transport charges extra</b>
+                </td>
+                <td>
+                    <b>Reference No & Date:</b> <div contenteditable="true" class="editable"></div>
+                    <b>Other References:</b> <div contenteditable="true" class="editable"></div>
+                </td>
             </tr>
-        </thead>
-        <tbody>
+        </table>
+
+        <!-- Buyer Info Section -->
+        <table class="buyer-info">
             <tr>
-                <td>1</td>
-                <td><input type="text" class="desc"></td>
-                <td><input type="text" class="hsn"></td>
-                <td><input type="number" class="qty" value="1" oninput="updateTotals()"></td>
-                <td><input type="number" class="rate" value="0" oninput="updateTotals()"></td>
-                <td><input type="text" class="per" value="pcs"></td>
-                <td class="amount">0.00</td>
-                <td><button class="remove-btn" onclick="removeRow(this)">X</button></td>
+                <td>
+                    <b>Consignee (Ship to)</b><br>
+                    <strong><div contenteditable="true" class="editable">AIRYAN PNEUMATICS</div></strong>
+                    <div contenteditable="true" class="editable">Gala No 19 Abdul Rashid Compound Kherani Road, Sakinaka Mumbai 400072. Behind Sanman Hotel</div>
+                    GSTIN: <div contenteditable="true" class="editable">27BDDPS9188N1ZH</div>
+                    State Name: <div contenteditable="true" class="editable">Maharashtra</div>, Code: <div contenteditable="true" class="editable">27</div>
+                </td>
+                <td>
+                    <b>Buyer (Bill to)</b><br>
+                    <strong><div contenteditable="true" class="editable">M/S AIRYAN PNEUMATICS</div></strong>
+                    <div contenteditable="true" class="editable">17, Matruchya CHS, Near Anand Baba Ashram, Mohill Village Sakinaka Andheri (E), Hotel</div>
+                    GSTIN: <div contenteditable="true" class="editable">27BDDPS9188N1ZH</div>
+                    State Name: <div contenteditable="true" class="editable">Maharashtra</div>, Code: <div contenteditable="true" class="editable">27</div>
+                </td>
             </tr>
-        </tbody>
-    </table>
+        </table>
 
-    <button class="btn" onclick="addRow()">+ Add Item</button>
+        <!-- Items Table -->
+        <table class="items-table" style="margin-top:8px;" id="itemsTable">
+            <thead>
+                <tr>
+                    <th style="width:5%">Sl</th>
+                    <th style="width:40%">Description of Goods</th>
+                    <th style="width:10%">HSN/SAC</th>
+                    <th style="width:10%">Quantity</th>
+                    <th style="width:10%">Rate</th>
+                    <th style="width:5%">Per</th>
+                    <th style="width:15%">Amount</th>
+                    <th style="width:5%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><div contenteditable="true" class="editable">AIR Blower
+Model No 47 Capacity 220m3/hr
+Pressure 0.2kg/cm2 RPM
+1119# BLOWER</div></td>
+                    <td><div contenteditable="true" class="editable">84145920</div></td>
+                    <td><input type="number" value="1" oninput="calculateTotals()"></td>
+                    <td><input type="number" value="43000" oninput="calculateTotals()"></td>
+                    <td><div contenteditable="true" class="editable">set</div></td>
+                    <td><input class="amount" readonly></td>
+                    <td><button class="action-btn delete-btn" onclick="deleteRow(this)">−</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="action-btn" onclick="addRow()">+ Add Item</button>
 
-    <table class="summary-table">
-        <tr>
-            <td>GST Rate (%)</td>
-            <td><input type="number" id="gstRate" value="18" oninput="updateTotals()"></td>
-            <td>Total</td>
-            <td id="total">₹0.00</td>
-        </tr>
-        <tr>
-            <td colspan="2">IGST</td>
-            <td>Tax Amount</td>
-            <td id="tax">₹0.00</td>
-        </tr>
-        <tr>
-            <td colspan="2"></td>
-            <td>Grand Total</td>
-            <td id="grandTotal">₹0.00</td>
-        </tr>
-    </table>
+        <!-- GST & Total Section -->
+        <table class="items-table">
+            <tr>
+                <td colspan="6"><b>CGST OUTPUT @ 9%</b></td>
+                <td><input id="cgst" readonly></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><b>SGST OUTPUT @ 9%</b></td>
+                <td><input id="sgst" readonly></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-right"><b>Total</b></td>
+                <td><b><input id="totalAmount" readonly></b></td>
+                <td></td>
+            </tr>
+        </table>
 
-    <p><strong>Amount in words:</strong> <span id="amountWords">Zero Only</span></p>
-    <p><strong>Declaration:</strong> We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
-</div>
+        <div class="amount-words">
+            Amount Chargeable (in words): <br>
+            <b><input id="amountWords" readonly></b>
+        </div>
 
-<button class="btn" onclick="generatePDF()">Download PDF</button>
+        <div style="margin-top:15px;">
+            <b>Declaration</b><br>
+            We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.<br><br>
+            <i>This is a Computer Generated Invoice</i>
+        </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="script.js"></script>
+        <div class="signature">
+            for <div contenteditable="true" class="editable">Sky Blower Systems</div><br><br><br>
+            <b>Authorised Signatory</b>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 20px;">
+        <button onclick="generatePDF()">Download PDF</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
