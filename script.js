@@ -45,22 +45,48 @@ function calculateTotals() {
   document.getElementById("cgst").value = cgst.toFixed(2);
   document.getElementById("sgst").value = sgst.toFixed(2);
   document.getElementById("totalAmount").value = total.toFixed(2);
-  document.getElementById("amountWords").value = numberToWords(total);
+
+  document.getElementById("amountWords").value = convertAmountToWords(total);
 }
 
-function numberToWords(num) {
+// ✅ Convert number to words including paise
+function convertAmountToWords(amount) {
+  if (isNaN(amount)) return "Zero Only";
+
+  let [rupees, paise] = amount.toFixed(2).split(".");
+  rupees = parseInt(rupees, 10);
+  paise = parseInt(paise, 10);
+
+  let words = "";
+
+  if (rupees > 0) {
+    words += numberToWordsIndian(rupees) + " Rupees";
+  }
+  if (paise > 0) {
+    words += (words ? " and " : "") + numberToWordsIndian(paise) + " Paise";
+  }
+
+  return words ? words + " Only" : "Zero Only";
+}
+
+// ✅ Convert integer numbers into Indian numbering words
+function numberToWordsIndian(num) {
   const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
       'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
   const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
-  if ((num = num.toString()).length > 9) return 'Overflow';
+  if (num === 0) return 'Zero';
+  if (num.toString().length > 9) return 'Overflow';
+
   let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-  if (!n) return; let str = '';
+  if (!n) return '';
+
+  let str = '';
   str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + ' Crore ' : '';
   str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + ' Lakh ' : '';
   str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + ' Thousand ' : '';
   str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + ' Hundred ' : '';
-  str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' Only' : '';
+  str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
   return str.trim();
 }
 
