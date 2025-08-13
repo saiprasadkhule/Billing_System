@@ -121,7 +121,8 @@ Pressure 0.2kg/cm2 RPM
         </div>
 
 <!-- ✅ Bank Details Section -->
-<div class="bank-details" style="margin-top:15px; border:1px solid #000; padding:8px;">
+ <div class="bank-declaration-signature">
+<div class="bank-details" style="margin-top:15px; padding:8px;">
     <b>Bank Details</b>
     <table style="width:100%; margin-top:5px; border-collapse: collapse;">
         <tr>
@@ -148,18 +149,19 @@ Pressure 0.2kg/cm2 RPM
         <div style="margin-top:15px;">
             <b>Declaration</b><br>
             We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.<br><br>
-            <div class="footer-note">
-                <i>This is a Computer Generated Invoice</i>
-            </div>
+            
             
         </div>
 
         <div class="signature">
             for <div contenteditable="true" class="editable">AIRYAN PNEUMATICS</div><br><br><br>
             <b>Authorised Signatory</b>
+                <div class="computer-note">
+                 This is a Computer Generated Invoice
+                </div>
         </div>
     </div>
-
+</div>
     <div style="text-align: center; margin: 20px;">
         <button onclick="generatePDF()">Download PDF</button>
     </div>

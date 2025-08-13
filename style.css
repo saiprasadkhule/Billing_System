@@ -7,16 +7,14 @@ body {
     color: #000;
 }
 .invoice-box {
-    width: 190mm;
-    height: 277mm;  /* ✅ Fixed height to match A4 */
+    width: 186mm; /* instead of 210mm */
     margin: auto;
     border: 1px solid #000;
     padding: 10mm;
     box-sizing: border-box;
-    position: relative;
-    display: flex;
-    flex-direction: column;
 }
+
+
 .title {
     text-align: center;
     font-size: 18px;
@@ -42,6 +40,8 @@ td, th {
 .text-right { text-align: right; }
 .amount-words { margin-top: 10px; font-weight: bold; }
 .signature { text-align: right; margin-top: 30px; }
+
+
 .editable {
     width: 100%;
     min-height: 20px;
@@ -96,6 +96,7 @@ input {
 .logo-container .logo {
     height: 96px; 
     width: auto;
+    margin-left: 60px;
 }
 
 .title-container {
@@ -115,4 +116,46 @@ input {
 .bank-details .editable {
     display: inline-block;
     min-width: 200px;
+}
+
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+}
+
+.items-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+.items-table thead {
+    display: table-header-group; /* Repeat header on each page */
+}
+
+
+.bank-declaration-signature {
+    page-break-inside: avoid; /* Keep together */
+}
+
+
+
+.bank-details {
+    margin-top: 10mm; /* space from top if it's the first item on the page */
+    page-break-inside: avoid; /* keep it together */
+}
+
+
+.bank-declaration-signature {
+    page-break-inside: avoid;
+    page-break-before: auto;
+}
+ 
+
+.computer-note {
+    text-align: center;
+    margin-top: 40px;
+    font-style: italic;
+    font-size: 12px;
 }

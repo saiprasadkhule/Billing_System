@@ -91,26 +91,55 @@ function numberToWordsIndian(num) {
 }
 
 function generatePDF() {
-  calculateTotals();
+    calculateTotals();
 
-  let invoiceClone = document.getElementById("invoice").cloneNode(true);
+    let invoiceClone = document.getElementById("invoice").cloneNode(true);
 
-  // Remove action buttons and column
-  invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
-  invoiceClone.querySelectorAll("th:last-child, td:last-child").forEach(cell => {
-      if (cell.innerText.includes("Action") || cell.querySelector("button")) {
-          cell.remove();
-      }
-  });
+    // Remove action buttons and column
+    invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
+    invoiceClone.querySelectorAll("th:last-child, td:last-child").forEach(cell => {
+        if (cell.innerText.includes("Action") || cell.querySelector("button")) {
+            cell.remove();
+        }
+    });
 
-  html2pdf().set({
-      margin: [0, 0, 5, 0],
-      filename: 'invoice.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(invoiceClone).save();
+    // ✅ Ensure Bank Details + Declaration + Signature stay together
+    const bankDetails = invoiceClone.querySelector(".bank-details");
+    const declaration = bankDetails.nextElementSibling; // Declaration div
+    const signature = declaration.nextElementSibling;   // Signature div
+
+    const blockWrapper = document.createElement("div");
+    blockWrapper.style.pageBreakInside = "avoid";
+    blockWrapper.style.marginTop = "15px";
+    blockWrapper.appendChild(bankDetails.cloneNode(true));
+    blockWrapper.appendChild(declaration.cloneNode(true));
+    blockWrapper.appendChild(signature.cloneNode(true));
+
+    bankDetails.replaceWith(blockWrapper);
+    declaration.remove();
+    signature.remove();
+
+    // ✅ PDF generation with page numbers
+    const opt = {
+        margin: [10, 10, 15, 10], // Extra bottom margin for footer
+        filename: 'invoice.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    html2pdf().set(opt).from(invoiceClone).toPdf().get('pdf').then(function (pdf) {
+        const pageCount = pdf.internal.getNumberOfPages();
+        pdf.setFontSize(10);
+        for (let i = 1; i <= pageCount; i++) {
+            pdf.setPage(i);
+            pdf.text(`Page ${i} of ${pageCount}`, pdf.internal.pageSize.getWidth() - 30, pdf.internal.pageSize.getHeight() - 5);
+        }
+    }).save();
 }
+
+
 
 // Initial calculation
 calculateTotals();
