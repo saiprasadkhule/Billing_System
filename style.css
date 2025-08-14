@@ -96,6 +96,13 @@ input {
     margin-left: 60%;
 }
 
+
+@media (max-width: 480px) {
+    .logo-container .logo {
+        margin-left: 10px; /* Mobile */
+    }
+}
+
 .title-container {
     font-family: Impact, Arial, sans-serif;
     font-size: 38px;
