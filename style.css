@@ -76,9 +76,6 @@ input {
     font-size: 12px;
 }
 
-
-
-
 .invoice-header {
     display: flex;
     align-items: center;
@@ -96,7 +93,7 @@ input {
 .logo-container .logo {
     height: 96px; 
     width: auto;
-    margin-left: 60px;
+    margin-left: 60%;
 }
 
 .title-container {
