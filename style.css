@@ -108,8 +108,11 @@ input {
 /* Apply fake bold only for smaller screens */
 @media (max-width: 768px) {
     .title-container {
-        text-shadow: 0.5px 0 0 #34196A, -0.5px 0 0 #34196A, 
-                     0 0.5px 0 #34196A, 0 -0.5px 0 #34196A;
+        text-shadow: 
+            1px 0 0 #34196A, -1px 0 0 #34196A, 
+            0 1px 0 #34196A, 0 -1px 0 #34196A, 
+            1px 1px 0 #34196A, -1px -1px 0 #34196A,
+            -1px 1px 0 #34196A, 1px -1px 0 #34196A;
     }
 }
 
