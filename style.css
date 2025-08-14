@@ -98,12 +98,21 @@ input {
 .title-container {
     font-family: Impact, Arial, sans-serif;
     font-size: 38px;
-    font-weight: bold !important;
+    font-weight: bold;
     color: #34196A;
     letter-spacing: 1px;
     text-align: left;
-    white-space: nowrap; /* Keep text in one line on large screens */
+    white-space: nowrap;
 }
+
+/* Apply fake bold only for smaller screens */
+@media (max-width: 768px) {
+    .title-container {
+        text-shadow: 0.5px 0 0 #34196A, -0.5px 0 0 #34196A, 
+                     0 0.5px 0 #34196A, 0 -0.5px 0 #34196A;
+    }
+}
+
 
 @media (max-width: 480px) {
     .invoice-header {
