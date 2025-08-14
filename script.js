@@ -125,7 +125,7 @@ function generatePDF() {
         filename: 'invoice.pdf',
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
