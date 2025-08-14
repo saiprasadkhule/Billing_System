@@ -98,7 +98,7 @@ input {
 .title-container {
     font-family: Impact, Arial, sans-serif;
     font-size: 38px;
-    font-weight: bold;
+    font-weight: bold !important;
     color: #34196A;
     letter-spacing: 1px;
     text-align: left;
