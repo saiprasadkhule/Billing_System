@@ -116,7 +116,6 @@ input {
     }
 }
 
-
 @media (max-width: 480px) {
     .invoice-header {
         justify-content: center; /* Center both on mobile */
@@ -171,7 +170,7 @@ input {
 
 
 .bank-details {
-    margin-top: 10mm; /* space from top if it's the first item on the page */
+    /*margin-top: 2mm;  space from top if it's the first item on the page */
     page-break-inside: avoid; /* keep it together */
 }
 
@@ -187,4 +186,40 @@ input {
     margin-top: 40px;
     font-style: italic;
     font-size: 12px;
+}
+
+
+
+.amount-bank-declaration {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Aligns top edges */
+    margin-top: 10px;
+    gap: 40px;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+}
+
+.left-side {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.right-side {
+    flex: 0 0 250px; /* Slightly wider for inline bank details */
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 2mm;
+
+}
+
+.bank-details div {
+    margin-bottom: 4px;
+
+}
+
+.bank-details span {
+    display: inline; /* Keep on same line */
+    min-width: auto;
 }

@@ -46,7 +46,7 @@ function calculateTotals() {
   document.getElementById("sgst").value = sgst.toFixed(2);
   document.getElementById("totalAmount").value = total.toFixed(2);
 
-  document.getElementById("amountWords").value = convertAmountToWords(total);
+  document.getElementById("amount-words").value = convertAmountToWords(total);
 }
 
 // ✅ Convert number to words including paise
@@ -95,6 +95,29 @@ function generatePDF() {
 
     let invoiceClone = document.getElementById("invoice").cloneNode(true);
 
+    // --- TEMP FIX: Change flex to table layout for PDF ---
+    let amountSection = invoiceClone.querySelector(".amount-bank-declaration");
+    if (amountSection) {
+        amountSection.style.display = "table";
+        amountSection.style.width = "100%";
+        amountSection.style.tableLayout = "fixed";
+        amountSection.style.pageBreakInside = "avoid";
+
+        let leftSide = amountSection.querySelector(".left-side");
+        let rightSide = amountSection.querySelector(".right-side");
+
+        if (leftSide && rightSide) {
+            leftSide.style.display = "table-cell";
+            leftSide.style.width = "65%";
+            leftSide.style.verticalAlign = "top";
+            leftSide.style.paddingRight = "15px";
+
+            rightSide.style.display = "table-cell";
+            rightSide.style.width = "35%";
+            rightSide.style.verticalAlign = "top";
+        }
+    }
+
     // Remove action buttons and column
     invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
     invoiceClone.querySelectorAll("th:last-child, td:last-child").forEach(cell => {
@@ -103,25 +126,8 @@ function generatePDF() {
         }
     });
 
-    // ✅ Ensure Bank Details + Declaration + Signature stay together
-    const bankDetails = invoiceClone.querySelector(".bank-details");
-    const declaration = bankDetails.nextElementSibling; // Declaration div
-    const signature = declaration.nextElementSibling;   // Signature div
-
-    const blockWrapper = document.createElement("div");
-    blockWrapper.style.pageBreakInside = "avoid";
-    blockWrapper.style.marginTop = "15px";
-    blockWrapper.appendChild(bankDetails.cloneNode(true));
-    blockWrapper.appendChild(declaration.cloneNode(true));
-    blockWrapper.appendChild(signature.cloneNode(true));
-
-    bankDetails.replaceWith(blockWrapper);
-    declaration.remove();
-    signature.remove();
-
-    // ✅ PDF generation with page numbers
     const opt = {
-        margin: [10, 10, 15, 10], // Extra bottom margin for footer
+        margin: [10, 10, 15, 10],
         filename: 'invoice.pdf',
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
