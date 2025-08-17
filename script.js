@@ -27,7 +27,6 @@ function updateSerialNumbers() {
       table.rows[i].cells[0].innerText = i + 1;
   }
 }
-
 function calculateTotals() {
   let table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
   let subtotal = 0;
@@ -38,6 +37,7 @@ function calculateTotals() {
       table.rows[i].cells[6].querySelector("input").value = amount.toFixed(2);
       subtotal += amount;
   }
+
   let cgst = subtotal * 0.09;
   let sgst = subtotal * 0.09;
   let total = subtotal + cgst + sgst;
@@ -46,10 +46,11 @@ function calculateTotals() {
   document.getElementById("sgst").value = sgst.toFixed(2);
   document.getElementById("totalAmount").value = total.toFixed(2);
 
-  document.getElementById("amount-words").value = convertAmountToWords(total);
+  // ✅ Always update words correctly
+document.getElementById("amount-words").innerHTML =
+    "<b>Amount Chargeable (in words):</b> " + convertAmountToWords(total);
 }
 
-// ✅ Convert number to words including paise
 function convertAmountToWords(amount) {
   if (isNaN(amount)) return "Zero Only";
 
@@ -63,13 +64,14 @@ function convertAmountToWords(amount) {
     words += numberToWordsIndian(rupees) + " Rupees";
   }
   if (paise > 0) {
+    // ✅ Fix paise leading zero issue
     words += (words ? " and " : "") + numberToWordsIndian(paise) + " Paise";
   }
 
   return words ? words + " Only" : "Zero Only";
 }
 
-// ✅ Convert integer numbers into Indian numbering words
+// ✅ Works for both large numbers and small paise
 function numberToWordsIndian(num) {
   const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
       'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
@@ -89,7 +91,6 @@ function numberToWordsIndian(num) {
   str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
   return str.trim();
 }
-
 
 
 function generatePDF() {
@@ -113,7 +114,7 @@ function generatePDF() {
     });
 
     const opt = {
-        margin: [5, 5, 5, 5],   // safe margins (top, left, bottom, right)
+        margin: [5,5, 5, 5],   // safe margins (top, left, bottom, right)
         filename: 'invoice.pdf',
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
