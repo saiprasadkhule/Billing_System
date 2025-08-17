@@ -90,33 +90,19 @@ function numberToWordsIndian(num) {
   return str.trim();
 }
 
+
+
 function generatePDF() {
     calculateTotals();
 
     let invoiceClone = document.getElementById("invoice").cloneNode(true);
 
-    // --- TEMP FIX: Change flex to table layout for PDF ---
-    let amountSection = invoiceClone.querySelector(".amount-bank-declaration");
-    if (amountSection) {
-        amountSection.style.display = "table";
-        amountSection.style.width = "100%";
-        amountSection.style.tableLayout = "fixed";
-        amountSection.style.pageBreakInside = "avoid";
-
-        let leftSide = amountSection.querySelector(".left-side");
-        let rightSide = amountSection.querySelector(".right-side");
-
-        if (leftSide && rightSide) {
-            leftSide.style.display = "table-cell";
-            leftSide.style.width = "65%";
-            leftSide.style.verticalAlign = "top";
-            leftSide.style.paddingRight = "15px";
-
-            rightSide.style.display = "table-cell";
-            rightSide.style.width = "35%";
-            rightSide.style.verticalAlign = "top";
-        }
-    }
+    // Ensure invoice expands but not cropped
+    invoiceClone.style.width = "100%";
+    invoiceClone.style.maxWidth = "100%";   // prevent fixed width cropping
+    invoiceClone.style.margin = "0 auto";   // center horizontally
+    invoiceClone.style.padding = "10px";    // small inner padding
+    invoiceClone.style.boxSizing = "border-box"; 
 
     // Remove action buttons and column
     invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
@@ -127,11 +113,16 @@ function generatePDF() {
     });
 
     const opt = {
-        margin: [10, 10, 15, 10],
+        margin: [5, 5, 5, 5],   // safe margins (top, left, bottom, right)
         filename: 'invoice.pdf',
         image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3, logging: false, scrollY: 0, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
+        html2canvas: { 
+            scale: 2,   // smaller scale to prevent cropping
+            logging: false, 
+            scrollY: 0, 
+            useCORS: true 
+        },
+        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' }, // A3
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
@@ -140,10 +131,16 @@ function generatePDF() {
         pdf.setFontSize(10);
         for (let i = 1; i <= pageCount; i++) {
             pdf.setPage(i);
-            pdf.text(`Page ${i} of ${pageCount}`, pdf.internal.pageSize.getWidth() - 30, pdf.internal.pageSize.getHeight() - 5);
+            pdf.text(`Page ${i} of ${pageCount}`,
+                pdf.internal.pageSize.getWidth() - 30,
+                pdf.internal.pageSize.getHeight() - 5
+            );
         }
     }).save();
 }
+
+
+
 
 
 
