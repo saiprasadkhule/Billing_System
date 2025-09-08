@@ -99,24 +99,30 @@ Pressure 0.2kg/cm2 RPM
         </table>
         <button class="action-btn" onclick="addRow()">+ Add Item</button>
 
-        <!-- GST & Total Section -->
-        <table class="items-table">
-            <tr>
-                <td colspan="6"><b>CGST OUTPUT @ 9%</b></td>
-                <td><input id="cgst" readonly></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="6"><b>SGST OUTPUT @ 9%</b></td>
-                <td><input id="sgst" readonly></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="6" class="text-right"><b>Total</b></td>
-                <td><b><input id="totalAmount" readonly></b></td>
-                <td></td>
-            </tr>
-        </table>
+       <!-- GST & Total Section -->
+<table class="items-table" id="gstTable">
+    <tr id="cgstRow">
+        <td colspan="6"><b>CGST OUTPUT @ 9%</b></td>
+        <td><input id="cgst" readonly></td>
+        <td><button class="action-btn delete-btn" onclick="removeTaxRow('cgstRow')">×</button></td>
+    </tr>
+    <tr id="sgstRow">
+        <td colspan="6"><b>SGST OUTPUT @ 9%</b></td>
+        <td><input id="sgst" readonly></td>
+        <td><button class="action-btn delete-btn" onclick="removeTaxRow('sgstRow')">×</button></td>
+    </tr>
+    <tr id="igstRow">
+        <td colspan="6"><b>IGST OUTPUT @ 18%</b></td>
+        <td><input id="igst" readonly></td>
+        <td><button class="action-btn delete-btn" onclick="removeTaxRow('igstRow')">×</button></td>
+    </tr>
+    <tr>
+        <td colspan="6" class="text-right"><b>Total</b></td>
+        <td><b><input id="totalAmount" readonly></b></td>
+        <td></td>
+    </tr>
+</table>
+
 <div class="amount-bank-declaration">
     <!-- Left Side -->
     <div class="left-side">
@@ -133,8 +139,8 @@ Pressure 0.2kg/cm2 RPM
     <div class="right-side bank-details">
         <b>Bank Details</b><br>
         <div>Bank Name: State Bank of India</div>
-        <div>A/c No: 1234567890</div>
-        <div>IFSC: SBIN0000123</div>
+        <div>A/c No: 002020110000720</div>
+        <div>IFSC: BKID0000020</div>
         <div>Branch: Mumbai Main Branch</div>
     </div>
 </div>

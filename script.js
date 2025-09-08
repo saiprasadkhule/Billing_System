@@ -30,6 +30,7 @@ function updateSerialNumbers() {
 function calculateTotals() {
   let table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
   let subtotal = 0;
+
   for (let i = 0; i < table.rows.length; i++) {
       let qty = parseFloat(table.rows[i].cells[3].querySelector("input").value) || 0;
       let rate = parseFloat(table.rows[i].cells[4].querySelector("input").value) || 0;
@@ -38,18 +39,36 @@ function calculateTotals() {
       subtotal += amount;
   }
 
-  let cgst = subtotal * 0.09;
-  let sgst = subtotal * 0.09;
-  let total = subtotal + cgst + sgst;
+  let total = subtotal;
 
-  document.getElementById("cgst").value = cgst.toFixed(2);
-  document.getElementById("sgst").value = sgst.toFixed(2);
+  // ✅ Check if CGST row exists
+  if (document.getElementById("cgst")) {
+    let cgst = subtotal * 0.09;
+    document.getElementById("cgst").value = cgst.toFixed(2);
+    total += cgst;
+  }
+
+  // ✅ Check if SGST row exists
+  if (document.getElementById("sgst")) {
+    let sgst = subtotal * 0.09;
+    document.getElementById("sgst").value = sgst.toFixed(2);
+    total += sgst;
+  }
+
+  // ✅ Check if IGST row exists
+  if (document.getElementById("igst")) {
+    let igst = subtotal * 0.18;
+    document.getElementById("igst").value = igst.toFixed(2);
+    total += igst;
+  }
+
   document.getElementById("totalAmount").value = total.toFixed(2);
 
-  // ✅ Always update words correctly
-document.getElementById("amount-words").innerHTML =
-    "<b>Amount Chargeable (in words):</b> " + convertAmountToWords(total);
+  // Update amount in words
+  document.getElementById("amount-words").innerHTML =
+      "<b>Amount Chargeable (in words):</b> " + convertAmountToWords(total);
 }
+
 
 function convertAmountToWords(amount) {
   if (isNaN(amount)) return "Zero Only";
@@ -70,6 +89,15 @@ function convertAmountToWords(amount) {
 
   return words ? words + " Only" : "Zero Only";
 }
+
+function removeTaxRow(rowId) {
+  let row = document.getElementById(rowId);
+  if (row) {
+    row.remove();
+    calculateTotals(); // recalc after removal
+  }
+}
+
 
 // ✅ Works for both large numbers and small paise
 function numberToWordsIndian(num) {
