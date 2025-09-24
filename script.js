@@ -35,7 +35,8 @@ function calculateTotals() {
       let qty = parseFloat(table.rows[i].cells[3].querySelector("input").value) || 0;
       let rate = parseFloat(table.rows[i].cells[4].querySelector("input").value) || 0;
       let amount = qty * rate;
-      table.rows[i].cells[6].querySelector("input").value = amount.toFixed(2);
+      table.rows[i].cells[6].querySelector("input").value = 
+      amount.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2});
       subtotal += amount;
   }
 
@@ -43,26 +44,30 @@ function calculateTotals() {
 
   // ✅ Check if CGST row exists
   if (document.getElementById("cgst")) {
-    let cgst = subtotal * 0.09;
-    document.getElementById("cgst").value = cgst.toFixed(2);
-    total += cgst;
+      let cgst = subtotal * 0.09;
+      document.getElementById("cgst").value = 
+          cgst.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      total += cgst;
   }
 
   // ✅ Check if SGST row exists
   if (document.getElementById("sgst")) {
     let sgst = subtotal * 0.09;
-    document.getElementById("sgst").value = sgst.toFixed(2);
+    document.getElementById("sgst").value = 
+        sgst.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2});
     total += sgst;
   }
 
   // ✅ Check if IGST row exists
   if (document.getElementById("igst")) {
     let igst = subtotal * 0.18;
-    document.getElementById("igst").value = igst.toFixed(2);
+    document.getElementById("igst").value = 
+        igst.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2});
     total += igst;
   }
 
-  document.getElementById("totalAmount").value = total.toFixed(2);
+  document.getElementById("totalAmount").value = 
+    total.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
   // Update amount in words
   document.getElementById("amount-words").innerHTML =
@@ -128,30 +133,28 @@ function generatePDF() {
 
     // Ensure invoice expands but not cropped
     invoiceClone.style.width = "100%";
-    invoiceClone.style.maxWidth = "100%";   // prevent fixed width cropping
-    invoiceClone.style.margin = "0 auto";   // center horizontally
-    invoiceClone.style.padding = "10px";    // small inner padding
+    invoiceClone.style.maxWidth = "100%";
+    invoiceClone.style.margin = "0 auto";
+    invoiceClone.style.padding = "10px";
     invoiceClone.style.boxSizing = "border-box"; 
 
-    // Remove action buttons and column
+    // Remove action buttons and column from items table
     invoiceClone.querySelectorAll(".action-btn").forEach(btn => btn.remove());
-    invoiceClone.querySelectorAll("th:last-child, td:last-child").forEach(cell => {
-        if (cell.innerText.includes("Action") || cell.querySelector("button")) {
-            cell.remove();
-        }
+    invoiceClone.querySelectorAll("#itemsTable th:last-child, #itemsTable td:last-child").forEach(cell => {
+        cell.remove();
+    });
+
+    // 🔥 Remove GST action column too
+    invoiceClone.querySelectorAll("#gstTable td:last-child").forEach(cell => {
+        cell.remove();
     });
 
     const opt = {
-        margin: [5,5, 5, 5],   // safe margins (top, left, bottom, right)
+        margin: [5,5,5,5],
         filename: 'invoice.pdf',
         image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-            scale: 2,   // smaller scale to prevent cropping
-            logging: false, 
-            scrollY: 0, 
-            useCORS: true 
-        },
-        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' }, // A3
+        html2canvas: { scale: 2, logging: false, scrollY: 0, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
@@ -167,8 +170,6 @@ function generatePDF() {
         }
     }).save();
 }
-
-
 
 
 

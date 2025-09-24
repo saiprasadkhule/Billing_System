@@ -242,3 +242,7 @@ td, th, .editable {
     white-space: normal !important;
 }
 
+#gstTable td:nth-child(2) {
+    width: 15% !important;
+}
+
